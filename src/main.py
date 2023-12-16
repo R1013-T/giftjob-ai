@@ -4,7 +4,8 @@ from entry_sheet import EntrySheet
 
 app = FastAPI()
 
+
 @app.post("/ai")
 async def ai(message: str):
-  res = await EntrySheet(message)
-  return {"message": res}
+    res = await EntrySheet(message)
+    return {"content": res}
