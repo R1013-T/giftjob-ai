@@ -8,13 +8,11 @@ client = AzureOpenAI(
     api_version="2023-12-01-preview"
 )
 
-# This will correspond to the custom name you chose for your deployment when you deployed a model.
 deployment_name = 'entry-sheet'
 
 
-async def EntrySheet(message: str):
+async def EntrySheet(question: str, content: str):
     response = client.chat.completions.create(
-        # Model = should match the deployment name you chose for your 1106-preview model deployment
         model="entry-sheet",
         response_format={"type": "json_object"},
         messages=[
@@ -26,13 +24,15 @@ async def EntrySheet(message: str):
                 4. Structure and Flow: Verify whether the response is logically structured and flows in a way that is easy for the reader to understand, and propose improvements.\n
                 5. Individuality and Persuasiveness: Assess whether the user's personality comes through and the response is persuasive, and provide necessary advice.\n
                 6. Appropriateness and Fit: Consider whether the response is suitable for the company and job position it is being submitted to, and whether it aligns with the company culture and the type of candidate they are looking for.\n
-                7. You are a helpful assistant designed to output JSON.
-                8. Please output the following three items. Enclose the revised part of the result in <span></span>.\n
+                7. Please reply in the language entered by the user.\n
+                8. You are a helpful assistant designed to output JSON.
+                9. Please output the following three items. Enclose the revised part of the result in <span></span>.\n
                 "result": Please write the revised text.\n
                 "score": Give a comprehensive score out of 100 points for the text.\n
                 "advice": Provide advice for the user's text.
             '''},
-            {"role": "user", "content": message}
+            {"role": "user", "content": f"Entry Sheet Subject: {question}"},
+            {"role": "user", "content": f"Entry Sheet Contents: {content}"},
         ],
     )
 
@@ -45,13 +45,5 @@ async def EntrySheet(message: str):
         "score": data["score"],
         "advice": data["advice"]
     }
-
-    print(
-        "\n\n=====================================\n",
-        "response_content: ", response_content, "\n",
-        "data: ", data, "\n",
-        "res: ", res,
-        "\n=====================================\n\n",
-    )
 
     return res
