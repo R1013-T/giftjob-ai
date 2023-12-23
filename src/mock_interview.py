@@ -47,7 +47,7 @@ async def MockInterview(occupation: str, user: Optional[List[str]] = None, quest
         message = previous_messages
         message.append(
             {"role": "system",
-                "content": '''これまでの質疑応答を踏まえて、最後の質問をしてください。
+                "content": '''これまでの質疑応答を踏まえて、最後の質問をしてください。最後の質問ということも伝えてください。
                 出力形式はJSONで、以下の形式で出力してください。
                 "question": 質問の内容
                 '''},
@@ -56,9 +56,9 @@ async def MockInterview(occupation: str, user: Optional[List[str]] = None, quest
         message = previous_messages
         message.append(
             {"role": "system",
-                "content": '''これで面接は終了です。最後の挨拶とアドバイスを出力してください。
+                "content": '''これで面接は終了です。質問は終わりの旨を伝え、最後の挨拶とアドバイスを出力してください。
                 出力形式はJSONで、以下の形式で出力してください。
-                "greeting": 挨拶の内容
+                "greeting": 質問は終わり、挨拶の内容
                 "advice": アドバイスの内容
                 "score": 面接の総評点を100点満点で出力してください。
                 '''},
